@@ -10,26 +10,42 @@
     <van-tabs v-model="active" swipeable>
       <van-tab v-for="item in channel" :key="item.id" :title="item.name">
         <!-- 文章详情 -->
-        <articlelist :id="item.id"></articlelist>
+        <Articlelist :id="item.id"></Articlelist>
       </van-tab>
 
-      <span class="toutiao toutiao-gengduo"></span>
+      <span class="toutiao toutiao-gengduo" @click="isShow = true"></span>
     </van-tabs>
+    <!-- 弹出层 -->
+    <van-popup
+      closeable
+      v-model="isShow"
+      position="bottom"
+      close-icon-position="top-left"
+      :style="{ height: '100%' }"
+      ><channel-edit
+        :myChannels="channel"
+        @change-active=";[(isShow = false), (active = $event)]"
+      ></channel-edit>
+      <!-- 自定义事件传参子级把对应点击得index传过来并且触发自定义事件，父级让弹出框关闭，并且当前高亮的索引等于传过来的索引 -->
+    </van-popup>
   </div>
 </template>
 
 <script>
 import { getChannelAPI } from '@/api'
+import ChannelEdit from './components/ChannelEdit'
 import Articlelist from './components/Ariticlelist'
 export default {
   data() {
     return {
+      isShow: false,
       active: 0,
       channel: []
     }
   },
   components: {
-    Articlelist
+    Articlelist,
+    ChannelEdit
   },
   created() {
     this.getChannel()
