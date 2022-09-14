@@ -13,18 +13,19 @@ Vue.use(Vuex)
 // 配置项
 // key 默认值是vuex
 // storage 默认是本地存储
-// reducer:指定持久化那些数据，函数，return 一个对象  对象就作为存储的value函数
+// reducer:指定持久化那些数据，reducer(里面是state里面的数据)函数，return 一个对象  对象就作为存储的value函数
 export default new Vuex.Store({
   plugins: [
     createPersistedState({
       key: 'HEIMA-TOUTIAO',
       // storage: window.sessionStorage,
-      reducer({ tokenObj }) {
-        return { tokenObj }
+      reducer({ tokenObj, myChannels }) {
+        return { tokenObj, myChannels }
       }
     })
   ],
   state: {
+    myChannels: [],
     a: 555,
     // tokenObj: JSON.parse(localStorage.getItem('TOKEN')) || {}
     tokenObj: {}
@@ -40,6 +41,14 @@ export default new Vuex.Store({
       state.tokenObj = token
       // // token持久化本地存储
       // localStorage.setItem('TOKEN', JSON.stringify(token))
+    },
+    /**
+     *
+     * @param {*} state
+     * @param {Array} channel 删除或者添加后最新的cha1
+     */
+    SET_MY_CHANNEL(state, channel) {
+      state.myChannels = channel
     }
   }
 })
