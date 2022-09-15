@@ -1,6 +1,10 @@
 <template>
   <div>
-    <router-view></router-view>
+    <!-- 右滑进入 -->
+    <!-- out-in先出后入 in-out 先入后出 -->
+    <transition name="van-slide-left" mode="out-in">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
